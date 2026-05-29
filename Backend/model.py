@@ -19,5 +19,3 @@ class UserGame(db.Model):
     game_id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(20))
     rating = db.Column(db.Integer)
-
-#test
