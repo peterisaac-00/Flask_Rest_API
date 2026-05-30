@@ -35,7 +35,7 @@ A web application that allows users to manage their personal video game library.
 
 
 
-## Phase 1 — Database Models (Completed ✅)
+## Phase 1 — Database Models (Completed)
 
 ### Current Models:
 
@@ -56,3 +56,35 @@ A web application that allows users to manage their personal video game library.
 - `status` (e.g., "playing", "completed", "want_to_play")
 - `rating`
 
+## Phase 2 — Authentication (Completed)
+
+### Features Implemented:
+- User registration endpoint (`POST /auth/register`)
+- Password hashing using Bcrypt
+- User login endpoint (`POST /auth/login`)
+- Password verification
+- Protected route (`GET /auth/me`)
+- Basic authentication flow ready for JWT integration
+
+### Authentication Flow:
+- User registers with email & password
+- Password is securely hashed before saving
+- User logs in with credentials
+- Credentials are verified using hashed password
+- Authenticated user data can be accessed via protected endpoint
+
+### Future Improvements (Phase 2 Upgrade):
+- Add JWT token generation on login
+- Add token-based authentication for `/auth/me`
+- Add authorization middleware / decorators
+- Add refresh token system (optional)
+
+## How to Run (Current Stage)
+
+### 1. Setup Environment
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate        
+pip install -r requirements.txt
