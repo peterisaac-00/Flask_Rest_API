@@ -81,10 +81,3 @@ A web application that allows users to manage their personal video game library.
 
 ## How to Run (Current Stage)
 
-### 1. Setup Environment
-
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate        
-pip install -r requirements.txt
