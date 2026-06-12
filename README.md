@@ -1,43 +1,32 @@
-My Game Library
+# My Game Library
 
 A web application that allows users to manage their personal video game library. Users can track games they have played, rate them, update their status, and search for new games using the RAWG API.
 
-# Features (Currently Implemented)
+## Features (Currently Implemented)
 
-- User management (Registration & Login ready for Phase 2)
+- User registration & login with JWT authentication
+- Protected routes using JSON Web Tokens
 - Database models for users, games, and user-game relationships
-- Support for game status and rating tracking
+- Full CRUD for personal game library (add, view, update status/rating, delete)
+- React frontend with protected routing and persistent login (localStorage)
 
-# Technologies Used
+## Technologies Used
 
-## Backend
+### Backend
 - Python + Flask
 - SQLAlchemy with SQLite (for development)
-- Flask-Login (UserMixin)
-- JWT Authentication (to be implemented in Phase 2)
+- Flask-Bcrypt (password hashing)
+- Flask-JWT-Extended (authentication)
 - Flask-CORS
 
-## Frontend (Planned for Phase 4)
+### Frontend
 - React + Vite
 - Axios
 - React Router
-
-#Project Structure
-    my-game-library/
-├── backend/
-│   ├── app.py
-│   ├── config.py
-│   ├── models.py
-│   ├── routes/
-│   └── requirements.txt
-├── frontend/          # To be added in Phase 4
-└── README.md
-
+- Context API (auth state)
 
 
 ## Phase 1 — Database Models (Completed)
-
-### Current Models:
 
 **User**
 - `id`
@@ -51,33 +40,44 @@ A web application that allows users to manage their personal video game library.
 - `cover`
 
 **UserGame** (Association Table)
-- `user_id`
-- `game_id`
+- `user_id` (FK → User.id)
+- `game_id` (FK → Game.id)
 - `status` (e.g., "playing", "completed", "want_to_play")
 - `rating`
 
 ## Phase 2 — Authentication (Completed)
 
-### Features Implemented:
-- User registration endpoint (`POST /auth/register`)
-- Password hashing using Bcrypt
-- User login endpoint (`POST /auth/login`)
-- Password verification
-- Protected route (`GET /auth/me`)
-- Basic authentication flow ready for JWT integration
+### Endpoints
+- `POST /auth/register` — register a new user (password hashed with Bcrypt)
+- `POST /auth/login` — verify credentials and return a JWT access token
+- `GET /auth/me` — protected, returns current user's info (requires `Authorization: Bearer <token>`)
 
-### Authentication Flow:
+### Authentication Flow
 - User registers with email & password
-- Password is securely hashed before saving
-- User logs in with credentials
-- Credentials are verified using hashed password
-- Authenticated user data can be accessed via protected endpoint
+- Password is hashed with Bcrypt before saving
+- On login, credentials are verified and a JWT access token is issued
+- The token is sent with `Authorization: Bearer <token>` to access protected routes
 
-### Future Improvements (Phase 2 Upgrade):
-- Add JWT token generation on login
-- Add token-based authentication for `/auth/me`
-- Add authorization middleware / decorators
-- Add refresh token system (optional)
+## Phase 3 — Library Endpoints (Completed)
 
-## How to Run (Current Stage)
+All routes under `/library` are protected with `@jwt_required()`.
+
+- `GET /library` — returns all games in the current user's library
+- `POST /library` — adds a game to the library (creates the game record if it doesn't exist yet)
+- `PATCH /library/<game_id>` — updates `status` and/or `rating` for a library entry
+- `DELETE /library/<game_id>` — removes a game from the library
+
+## Phase 4 — React Frontend (In Progress)
+
+### Completed
+- Project scaffolded with Vite, React Router, and Axios
+- `AuthContext` for global auth state (token stored in localStorage)
+- Axios instance with automatic JWT header injection
+- Login page connected to `/auth/login`
+- Protected routing (`PrivateRoute`) and Navbar
+
+### In Progress / Planned
+- My Library page (display + filter by status)
+- Search Games page (RAWG API integration)
+- Game Detail page (add to library)
 
