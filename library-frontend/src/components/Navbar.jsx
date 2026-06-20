@@ -14,6 +14,7 @@ export default function Navbar() {
     <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
       {token ? (
         <>
+          <Link to="/dashboard">Dashboard</Link>
           <Link to="/library">My Library</Link>
           <Link to="/search">Search Games</Link>
           <button onClick={handleLogout}>Logout</button>

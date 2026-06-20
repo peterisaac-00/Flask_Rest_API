@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import MyLibrary from "./pages/MyLibrary";
 import SearchGames from "./pages/SearchGames";
 import GameDetail from "./pages/GameDetail";
@@ -17,6 +18,14 @@ function AppRoutes() {
       <Navbar />
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/library"
           element={

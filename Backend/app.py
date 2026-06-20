@@ -1,3 +1,5 @@
+import os
+import requests
 from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -9,6 +11,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rest.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'change-this-in-production'
+app.config['RAWG_API_KEY'] = os.environ.get('RAWG_API_KEY', '1b95ba1e4ea74ce8bcb453c3e3c0b7b4')
 app.register_blueprint(library_bp)
 CORS(app)
 db.init_app(app)
@@ -62,6 +65,32 @@ def me():
     if not user:
         return jsonify({'error': 'User not found'})
     return jsonify({'id': user.id, 'email': user.email})
+
+
+@app.route('/api/games/search')
+def search_games():
+    query = request.args.get('q', '')
+    if not query:
+        return jsonify({'error': 'Query parameter q is required'})
+
+    key = app.config['RAWG_API_KEY']
+    if not key:
+        return jsonify({'error': 'RAWG_API_KEY is not set. Add it to your environment variables.'})
+
+    rawg_url = f"https://api.rawg.io/api/games?key={key}&search={query}&page_size=20"
+    resp = requests.get(rawg_url)
+    return jsonify(resp.json())
+
+
+@app.route('/api/games/<int:rawg_id>')
+def game_detail(rawg_id):
+    key = app.config['RAWG_API_KEY']
+    if not key:
+        return jsonify({'error': 'RAWG_API_KEY is not set. Add it to your environment variables.'})
+
+    rawg_url = f"https://api.rawg.io/api/games/{rawg_id}?key={key}"
+    resp = requests.get(rawg_url)
+    return jsonify(resp.json())
 
 
 if __name__ == '__main__':

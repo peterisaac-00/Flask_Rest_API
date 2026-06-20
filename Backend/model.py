@@ -13,6 +13,8 @@ class Game(db.Model):
     rawg_id = db.Column(db.Integer, unique=True)
     name = db.Column(db.String(120))
     cover = db.Column(db.String(250))
+    genres = db.Column(db.Text)
+    platforms = db.Column(db.Text)
 
 class UserGame(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
